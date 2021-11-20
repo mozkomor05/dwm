@@ -2,7 +2,7 @@
 Based on https://github.com/LeD3F/dwm Tokyo theme.
 
 ## Requires
-- My custom build of dwmblocks https://github.com/mozkomor05/dwm
+- My custom build of dwmblocks https://github.com/mozkomor05/dwmblocks
 - See https://github.com/LeD3F/dwm for additional dependencies
 
 ## Special features
