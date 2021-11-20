@@ -5,6 +5,11 @@ Based on https://github.com/LeD3F/dwm Tokyo theme.
 - My custom build of dwmblocks https://github.com/mozkomor05/dwm
 - See https://github.com/LeD3F/dwm for additional dependencies
 
+## Special features
+- Switch between default, stack, spiral, deck, floating and more layouts.
+- Systray icons
+- Clickable status (dwmblocks)
+
 ## Screenshots
 ![Screenshot 1](./screens/2021-11-20_15-27.jpg)
 ![Screenshot 2](./screens/2021-11-20_15-28.jpg)
