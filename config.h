@@ -236,7 +236,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_k,          focusstack,             {.i = -1 } },
 	{ MODKEY,                       XK_s,          swapfocus,              {.i = -1 } },
 	{ MODKEY,                       XK_a,          incnmaster,             {.i = +1 } },
-	{ MODKEY,                       XK_y,          incnmaster,             {.i = -1 } },
+	{ MODKEY,                       XK_z,          incnmaster,             {.i = -1 } },
 	{ MODKEY,                       XK_Left,       setmfact,               {.f = -0.05} },
 	{ MODKEY,                       XK_Right,      setmfact,               {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Up,         setcfact,               {.f = +0.25} },
@@ -260,33 +260,34 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,				XK_u,		   setlayout,	 		   {.v = &layouts[5]} }, /* monocle */
 	{ MODKEY,						XK_i,		   setlayout,	 		   {.v = &layouts[6]} }, /* centeredmaster */
 	{ MODKEY|ShiftMask,				XK_i,		   setlayout,	 		   {.v = &layouts[7]} }, /* centeredfloatingmaster */
+	{ MODKEY,						XK_g,		   setlayout,	 		   {.v = &layouts[8]} }, /* grid */
 
 	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
 	{ MODKEY,                       XK_f,          togglefullscreen,       {0} },
-	{ MODKEY|ShiftMask,				XK_f,		   setlayout,			   {.v = &layouts[8]} },
-	{ MODKEY,                       XK_eacute,     view,                   {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_eacute,	   tag,                    {.ui = ~0 } },
+	{ MODKEY|ShiftMask,				XK_f,		   setlayout,			   {.v = &layouts[9]} },
+	{ MODKEY,                       XK_0,		   view,                   {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,		   tag,                    {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },
 	{ MODKEY,                       XK_period,     focusmon,               {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_comma,      tagmon,                 {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period,     tagmon,                 {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,      cyclelayout,            {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,     cyclelayout,            {.i = +1 } },
-	TAGKEYS(                        XK_plus,								0)
-	TAGKEYS(                        XK_ecaron,                     			1)
-	TAGKEYS(                        XK_scaron,                      		2)
-	TAGKEYS(                        XK_ccaron,                      		3)
-	TAGKEYS(                        XK_rcaron,                     			4)
-	TAGKEYS(                        XK_zcaron,                 			    5)
-	TAGKEYS(                        XK_yacute,              			    6)
-	TAGKEYS(                        XK_aacute,                			    7)
-	TAGKEYS(                        XK_iacute,              			    8)
+	TAGKEYS(                        XK_1,									0)
+	TAGKEYS(                        XK_2,	                     			1)
+	TAGKEYS(                        XK_3,   		                   		2)
+	TAGKEYS(                        XK_4,                   	  			3)
+	TAGKEYS(                        XK_5,                 				    4)
+	TAGKEYS(                        XK_6,              			    		5)
+	TAGKEYS(                        XK_7,                			    	6)
+	TAGKEYS(                        XK_8,              			    		7)
+	TAGKEYS(                        XK_9,              			    		8)
 
 	/* Custom commands */
 	{ MODKEY, 						XK_e, 		   spawn,                  {.v = eww_panel } }, /* Launch eww panel */
 	{ MODKEY|ShiftMask, 			XK_e, 		   spawn,                  {.v = eww_close } }, /* Close every eww instance */
 	{ MODKEY,                       XK_d,          spawn,                  SHCMD("~/.config/rofi/launchers/launcher/launcher.sh")}, /* rofi launcher */
-	{ MODKEY|ShiftMask,             XK_a,          spawn,                  SHCMD("~/.config/rofi/launchers/greenclip/launcher.sh")}, /* rofi clipboard */
+	{ MODKEY,			            XK_v,          spawn,                  SHCMD("~/.config/rofi/launchers/greenclip/launcher.sh")}, /* rofi clipboard */
 	{ MODKEY,                       XK_F1,         spawn,                  {.v = lock } }, /* rofi clipboard */
 	{ MODKEY,                       XK_x,          spawn,                  {.v = inhibitor_on } }, /* activate inhibitor */
 	{ MODKEY|ShiftMask,             XK_x,          spawn,                  {.v = inhibitor_off } }, /* deactivate inhibitor */	
@@ -298,7 +299,7 @@ static Key keys[] = {
 	{ 0, 							XF86XK_AudioPrev,		  spawn,		   SHCMD("playerctl previous") },
 	{ 0, 							XF86XK_AudioNext,		  spawn,		   SHCMD("playerctl next") },
 	{ 0, 							XF86XK_AudioPause,		  spawn,		   SHCMD("playerctl pause") },
-	{ 0, 							XF86XK_AudioPlay,		  spawn,		   SHCMD("playerctl play") },
+	{ 0, 							XF86XK_AudioPlay,		  spawn,		   SHCMD("playerctl play-pause") },
 	{ 0, 							XF86XK_AudioStop,		  spawn,		   SHCMD("playerctl stop") },
 	{ 0, 							XF86XK_AudioMicMute,	  spawn,		   SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 	{ 0,							XF86XK_Sleep,			  spawn,		   SHCMD("systemctl suspend") },
