@@ -109,18 +109,7 @@ static const Rule rules[] = {
 	RULE(.wintype  = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype  = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype  = WTYPE "SPLASH", .isfloating = 1)
-	// RULE(.class    = "Gimp", .isfloating=1, .tags = 1 << 3)
-	// RULE(.class    = "Lxappearance", .isfloating = 1)
-	// RULE(.class    = "File-roller", .isfloating = 1)
-	// RULE(.class    = "obs", .monitor = 1)
-	// RULE(.instance = "discord", .isfloating = 1)
-	// RULE(.class    = "mpv", .isfloating = 1)
-	// RULE(.class    = "Galculator", .isfloating = 1)
-	// RULE(.class    = "Yad", .isfloating = 1)
-	// RULE(.class    = "Steam", .tags = 1 << 6)
-	// RULE(.class    = "Lutris", .tags = 1 << 6, .isfloating = 1)
-	// RULE(.class    = "Microsoft-edge", .tags = 1 << 1)
-	// RULE(.class    = "TelegramDesktop", .tags = 1 << 4)
+	RULE(.class    = "vlc", .title = "VLC media player", .isfloating = 0)
 };
 
 
@@ -189,40 +178,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static const char *prtscrcmd[] = { "flameshot", "gui", NULL};
-static const char *termcmd[] = { "st", NULL };
-static const char *eww_close[] = { "eww", "close-all", NULL };
-static const char *lock[] = {
-	"betterlockscreen", 
-	"-l", "blur", 
-	"--display", 
-	"1", 
-	NULL 
-};
-static const char *inhibitor_on[] = { "inhibit_activate", NULL };
-static const char *inhibitor_off[] = { "inhibit_deactivate", NULL };
-static const char *eww_panel[] = { 
-	"eww", 
-	"open-many", 
-	"blur",
-	"profile", 
-	"system", 
-	"clock", 
-	"uptime",
-	"music",
-	"github",
-	"reddit",
-	"lor",
-	"youtube",
-	"twitch",	
-	"weather",
-	"apps", 
-	"logout",
-	"sleep",
-	"reboot",
-	"poweroff",
-	"folders",
-	NULL
-};
+static const char *termcmd[] = { "alacritty", NULL };
 
 #include <X11/XF86keysym.h>
 
@@ -284,13 +240,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,              			    		8)
 
 	/* Custom commands */
-	{ MODKEY, 						XK_e, 		   spawn,                  {.v = eww_panel } }, /* Launch eww panel */
-	{ MODKEY|ShiftMask, 			XK_e, 		   spawn,                  {.v = eww_close } }, /* Close every eww instance */
 	{ MODKEY,                       XK_d,          spawn,                  SHCMD("~/.config/rofi/launchers/launcher/launcher.sh")}, /* rofi launcher */
 	{ MODKEY,			            XK_v,          spawn,                  SHCMD("~/.config/rofi/launchers/greenclip/launcher.sh")}, /* rofi clipboard */
-	{ MODKEY,                       XK_F1,         spawn,                  {.v = lock } }, /* rofi clipboard */
-	{ MODKEY,                       XK_x,          spawn,                  {.v = inhibitor_on } }, /* activate inhibitor */
-	{ MODKEY|ShiftMask,             XK_x,          spawn,                  {.v = inhibitor_off } }, /* deactivate inhibitor */	
 
 	{ 0, 							XK_Print, 				  spawn, 		   {.v = prtscrcmd } },
 	{ 0,							XF86XK_AudioMute,		  spawn,		   SHCMD("pamixer -t; kill -36 $(pidof dwmblocks)") },

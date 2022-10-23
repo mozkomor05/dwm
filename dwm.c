@@ -103,6 +103,7 @@ enum
 	NetWMFullscreen,
 	NetActiveWindow,
 	NetWMWindowType,
+	NetWMWindowTypeDialog,
 	NetSystemTray,
 	NetSystemTrayOP,
 	NetSystemTrayOrientation,
@@ -217,7 +218,7 @@ struct Client
 	float cfact;
 	int x, y, w, h;
 	int oldx, oldy, oldw, oldh;
-	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
+	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
 	int bw, oldbw;
 	unsigned int tags;
 	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
@@ -377,6 +378,7 @@ static void updatenumlockmask(void);
 static void updatesizehints(Client *c);
 static void updatestatus(void);
 static void updatetitle(Client *c);
+static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
 static Client *wintoclient(Window w);
@@ -472,7 +474,12 @@ void applyrules(Client *c)
 	for (i = 0; i < LENGTH(rules); i++)
 	{
 		r = &rules[i];
-		if ((!r->title || strstr(c->name, r->title)) && (!r->class || strstr(class, r->class)) && (!r->role || strstr(role, r->role)) && (!r->instance || strstr(instance, r->instance)) && (!r->wintype || wintype == XInternAtom(dpy, r->wintype, False)))
+		if (
+			(!r->title || strstr(c->name, r->title)) &&
+			(!r->class || strstr(class, r->class)) &&
+			(!r->role || strstr(role, r->role)) &&
+			(!r->instance || strstr(instance, r->instance)) &&
+			(!r->wintype || wintype == XInternAtom(dpy, r->wintype, False)))
 		{
 			c->isfloating = r->isfloating;
 			c->tags |= r->tags;
@@ -525,6 +532,8 @@ int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
 		*w = bh;
 	if (resizehints || c->isfloating || !c->mon->lt[c->mon->sellt]->arrange)
 	{
+		if (!c->hintsvalid)
+			updatesizehints(c);
 		/* see last two sentences in ICCCM 4.1.2.3 */
 		baseismin = c->basew == c->minw && c->baseh == c->minh;
 		if (!baseismin)
@@ -1536,6 +1545,7 @@ void manage(Window w, XWindowAttributes *wa)
 	else
 		XSetWindowBorder(dpy, w, scheme[SchemeNorm][ColBorder].pixel);
 	configure(c); /* propagates border_width, if size doesn't change */
+	updatewindowtype(c);
 	updatesizehints(c);
 	if (getatomprop(c, netatom[NetWMState]) == netatom[NetWMFullscreen])
 		setfullscreen(c, 1);
@@ -1569,8 +1579,8 @@ void manage(Window w, XWindowAttributes *wa)
 	if (c->mon == selmon)
 		unfocus(selmon->sel, 0, NULL);
 	c->mon->sel = c;
-	arrange(c->mon);
 	XMapWindow(dpy, c->win);
+	arrange(c->mon);
 	focus(NULL);
 
 	setfloatinghint(c);
@@ -1745,7 +1755,7 @@ void propertynotify(XEvent *e)
 				arrange(c->mon);
 			break;
 		case XA_WM_NORMAL_HINTS:
-			updatesizehints(c);
+			c->hintsvalid = 0;
 			break;
 		case XA_WM_HINTS:
 			updatewmhints(c);
@@ -1761,6 +1771,8 @@ void propertynotify(XEvent *e)
 		}
 		if (ev->atom == motifatom)
 			updatemotifhints(c);
+		if (ev->atom == netatom[NetWMWindowType])
+			updatewindowtype(c);
 	}
 }
 
@@ -2142,6 +2154,7 @@ void setup(void)
 	netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", False);
 	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
 	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
+	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
 	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
 	netatom[NetClientListStacking] = XInternAtom(dpy, "_NET_CLIENT_LIST_STACKING", False);
 	motifatom = XInternAtom(dpy, "_MOTIF_WM_HINTS", False);
@@ -2674,6 +2687,7 @@ void updatesizehints(Client *c)
 	else
 		c->maxa = c->mina = 0.0;
 	c->isfixed = (c->maxw && c->maxh && c->maxw == c->minw && c->maxh == c->minh);
+	c->hintsvalid = 1;
 }
 
 void updatestatus(void)
@@ -2692,6 +2706,17 @@ void updatetitle(Client *c)
 		gettextprop(c->win, XA_WM_NAME, c->name, sizeof c->name);
 	if (c->name[0] == '\0') /* hack to mark broken clients */
 		strcpy(c->name, broken);
+}
+
+void updatewindowtype(Client *c)
+{
+	Atom state = getatomprop(c, netatom[NetWMState]);
+	Atom wtype = getatomprop(c, netatom[NetWMWindowType]);
+
+	if (state == netatom[NetWMFullscreen])
+		setfullscreen(c, 1);
+	if (wtype == netatom[NetWMWindowTypeDialog])
+		c->isfloating = 1;
 }
 
 void updatewmhints(Client *c)
