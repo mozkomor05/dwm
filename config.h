@@ -27,7 +27,7 @@ static int floatindicatortype            = INDICATOR_TOP_LEFT_SQUARE;
 //static const char *fonts[]               = { "JetBrainsMono Nerd Font:size=10:style=bold:antialias=true:autohint=true" };
 static const char *fonts[]          = { 
 	"JetBrainsMono Nerd Font:size=10:antialias=true:autohint=true", 
-	"JoyPixels:size=10:antialias=true:autohint=true"  
+	"Noto Color Emoji:size=10:antialias=true:autohint=true"  
 };
 
 // theme
