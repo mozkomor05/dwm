@@ -25,6 +25,7 @@
 #include "vanitygaps.c"
 #include "dragmfact.c"
 #include "restore_session.c"
+#include "sticky.c"
 
 /* Layouts */
 #include "layout_facts.c"

@@ -25,6 +25,7 @@
 #include "togglefullscreen.h"
 #include "vanitygaps.h"
 #include "restore_session.h"
+#include "sticky.h"
 
 /* Layouts */
 #include "layout_bstack.h"

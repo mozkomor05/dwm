@@ -59,7 +59,7 @@
 #define INTERSECT(x, y, w, h, m)                                   \
   (MAX(0, MIN((x) + (w), (m)->wx + (m)->ww) - MAX((x), (m)->wx)) * \
    MAX(0, MIN((y) + (h), (m)->wy + (m)->wh) - MAX((y), (m)->wy)))
-#define ISVISIBLE(C) ((C->tags & C->mon->tagset[C->mon->seltags]))
+#define ISVISIBLE(C) ((C->tags & C->mon->tagset[C->mon->seltags]) || C->issticky)
 #define LENGTH(X) (sizeof X / sizeof X[0])
 #define MOUSEMASK (BUTTONMASK | PointerMotionMask)
 #define WIDTH(X) ((X)->w + 2 * (X)->bw)
@@ -121,7 +121,8 @@ enum
   NetCurrentDesktop,
   NetClientList,
   NetClientListStacking,
-  NetLast
+  NetWMSticky,
+  NetLast,
 }; /* EWMH atoms */
 
 enum
@@ -227,7 +228,7 @@ struct Client
   int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
   int bw, oldbw;
   unsigned int tags;
-  int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
+  int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen, issticky;
   int beingmoved;
   int issteam;
   Client *next;
@@ -819,6 +820,9 @@ void clientmessage(XEvent *e)
       setfullscreen(c, (cme->data.l[0] == 1     /* _NET_WM_STATE_ADD    */
                         || (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */
                             && !c->isfullscreen)));
+
+      if (cme->data.l[1] == netatom[NetWMSticky] || cme->data.l[2] == netatom[NetWMSticky])
+        setsticky(c, (cme->data.l[0] == 1 || (cme->data.l[0] == 2 && !c->issticky)));
     }
   }
   else if (cme->message_type == netatom[NetActiveWindow])
@@ -1578,7 +1582,7 @@ void manage(Window w, XWindowAttributes *wa)
   updatewmhints(c);
   updatemotifhints(c);
 
-  if (c->iscentered || !(wa->x || wa->y))
+  if (c->iscentered)
   {
     c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
     c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
@@ -2210,6 +2214,7 @@ void setup(void)
   netatom[NetWMCheck] = XInternAtom(dpy, "_NET_SUPPORTING_WM_CHECK", False);
   netatom[NetWMFullscreen] =
       XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
+  netatom[NetWMSticky] = XInternAtom(dpy, "_NET_WM_STATE_STICKY", False);
   netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
   netatom[NetWMWindowTypeDialog] =
       XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
@@ -2785,6 +2790,8 @@ void updatewindowtype(Client *c)
 
   if (state == netatom[NetWMFullscreen])
     setfullscreen(c, 1);
+  if (state == netatom[NetWMSticky])
+    setsticky(c, 1);
   if (wtype == netatom[NetWMWindowTypeDialog])
   {
     c->iscentered = 1;
