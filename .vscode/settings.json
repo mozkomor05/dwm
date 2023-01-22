@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "xf86keysym.h": "c"
+        "xf86keysym.h": "c",
+        "layout_centeredmaster.h": "c"
     }
 }

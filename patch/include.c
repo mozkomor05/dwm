@@ -1,7 +1,6 @@
 /* Bar functionality */
 #include "bar_indicators.c"
 #include "bar_tagicons.c"
-
 #include "bar_ewmhtags.c"
 #include "bar_ltsymbol.c"
 #include "bar_powerline_status.c"
@@ -25,6 +24,8 @@
 #include "togglefullscreen.c"
 #include "vanitygaps.c"
 #include "dragmfact.c"
+#include "restore_session.c"
+
 /* Layouts */
 #include "layout_facts.c"
 #include "layout_bstack.c"

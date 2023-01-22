@@ -1,7 +1,6 @@
 /* Bar functionality */
 #include "bar_indicators.h"
 #include "bar_tagicons.h"
-
 #include "bar_ewmhtags.h"
 #include "bar_ltsymbol.h"
 #include "bar_powerline_status.h"
@@ -25,6 +24,8 @@
 #include "swapfocus.h"
 #include "togglefullscreen.h"
 #include "vanitygaps.h"
+#include "restore_session.h"
+
 /* Layouts */
 #include "layout_bstack.h"
 #include "layout_centeredmaster.h"

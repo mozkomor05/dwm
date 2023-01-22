@@ -1807,6 +1807,9 @@ void quit(const Arg *arg)
 {
   restart = arg->i;
   running = 0;
+
+  if (restart == 1)
+    saveSession();
 }
 
 Monitor *recttomon(int x, int y, int w, int h)
@@ -2923,6 +2926,7 @@ int main(int argc, char *argv[])
 #endif /* __OpenBSD__ */
   scan();
   runautostart();
+  restoreSession();
   run();
   if (restart)
     execvp(argv[0], argv);
