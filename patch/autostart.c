@@ -44,7 +44,7 @@ runautostart(void)
 			free(pathpfx);
 			return;
 		}
-		
+
 		if (sprintf(pathpfx, "%s/.%s", home, dwmdir) <= 0) {
 			free(pathpfx);
 			return;

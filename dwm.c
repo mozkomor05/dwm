@@ -303,8 +303,7 @@ typedef struct
 
 /* function declarations */
 static void applyrules(Client *c);
-static int applysizehints(Client *c, int *x, int *y, int *w, int *h,
-                          int interact);
+static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact);
 static void arrange(Monitor *m);
 static void arrangemon(Monitor *m);
 static void attach(Client *c);
@@ -356,8 +355,7 @@ static void resizemouse(const Arg *arg);
 static void restack(Monitor *m);
 static void run(void);
 static void scan(void);
-static int sendevent(Window w, Atom proto, int m, long d0, long d1, long d2,
-                     long d3, long d4);
+static int sendevent(Window w, Atom proto, int m, long d0, long d1, long d2, long d3, long d4);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
 static void setfocus(Client *c);
@@ -502,8 +500,7 @@ void applyrules(Client *c)
     XFree(ch.res_class);
   if (ch.res_name)
     XFree(ch.res_name);
-  c->tags =
-      c->tags & TAGMASK ? c->tags & TAGMASK : c->mon->tagset[c->mon->seltags];
+  c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : c->mon->tagset[c->mon->seltags];
 }
 
 int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
@@ -643,11 +640,9 @@ void buttonpress(XEvent *e)
       for (r = 0; r < LENGTH(barrules); r++)
       {
         br = &barrules[r];
-        if (br->bar != bar->idx || (br->monitor == 'A' && m != selmon) ||
-            br->clickfunc == NULL)
+        if (br->bar != bar->idx || (br->monitor == 'A' && m != selmon) || br->clickfunc == NULL)
           continue;
-        if (br->monitor != 'A' && br->monitor != -1 &&
-            br->monitor != bar->mon->index)
+        if (br->monitor != 'A' && br->monitor != -1 && br->monitor != bar->mon->index)
           continue;
         if (bar->x[r] <= ev->x && ev->x <= bar->x[r] + bar->w[r])
         {
@@ -798,18 +793,14 @@ void clientmessage(XEvent *e)
       updatesizehints(c);
       updatesystrayicongeom(c, wa.width, wa.height);
       XAddToSaveSet(dpy, c->win);
-      XSelectInput(dpy, c->win,
-                   StructureNotifyMask | PropertyChangeMask |
-                       ResizeRedirectMask);
+      XSelectInput(dpy, c->win, StructureNotifyMask | PropertyChangeMask | ResizeRedirectMask);
       XClassHint ch = {"dwmsystray", "dwmsystray"};
       XSetClassHint(dpy, c->win, &ch);
       XReparentWindow(dpy, c->win, systray->win, 0, 0);
       /* use parents background color */
       swa.background_pixel = scheme[SchemeNorm][ColBg].pixel;
       XChangeWindowAttributes(dpy, c->win, CWBackPixel, &swa);
-      sendevent(c->win, netatom[Xembed], StructureNotifyMask, CurrentTime,
-                XEMBED_EMBEDDED_NOTIFY, 0, systray->win,
-                XEMBED_EMBEDDED_VERSION);
+      sendevent(c->win, netatom[Xembed], StructureNotifyMask, CurrentTime, XEMBED_EMBEDDED_NOTIFY, 0, systray->win, XEMBED_EMBEDDED_VERSION);
       XSync(dpy, False);
       setclientstate(c, NormalState);
     }
@@ -820,8 +811,7 @@ void clientmessage(XEvent *e)
     return;
   if (cme->message_type == netatom[NetWMState])
   {
-    if (cme->data.l[1] == netatom[NetWMFullscreen] ||
-        cme->data.l[2] == netatom[NetWMFullscreen])
+    if (cme->data.l[1] == netatom[NetWMFullscreen] || cme->data.l[2] == netatom[NetWMFullscreen])
     {
       setfullscreen(c, (cme->data.l[0] == 1     /* _NET_WM_STATE_ADD    */
                         || (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */

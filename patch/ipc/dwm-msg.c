@@ -506,7 +506,7 @@ main(int argc, char *argv[])
 
   if (i >= argc) usage_error(prog_name, "Expected an argument, got none");
 
-  if (strcmp(argv[i], "help") == 0)
+  if (!argc || strcmp(argv[i], "help") == 0)
     print_usage(prog_name);
   else if (strcmp(argv[i], "run_command") == 0) {
     if (++i >= argc) usage_error(prog_name, "No command specified");
@@ -546,3 +546,4 @@ main(int argc, char *argv[])
 
   return 0;
 }
+

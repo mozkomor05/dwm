@@ -203,8 +203,20 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return,     zoom,                   {0} },
 	{ MODKEY|Mod1Mask,              XK_u,          incrgaps,               {.i = +1 } },
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_u,          incrgaps,               {.i = -1 } },
-	{ MODKEY|Mod1Mask,              XK_eacute,     togglegaps,             {0} },
-	{ MODKEY|Mod1Mask|ShiftMask,    XK_eacute,     defaultgaps,            {0} },
+	{ MODKEY|Mod1Mask,              XK_i,          incrigaps,              {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_i,          incrigaps,              {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_o,          incrogaps,              {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_o,          incrogaps,              {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_6,          incrihgaps,             {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_6,          incrihgaps,             {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_7,          incrivgaps,             {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_7,          incrivgaps,             {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_8,          incrohgaps,             {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_8,          incrohgaps,             {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_9,          incrovgaps,             {.i = +1 } },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_9,          incrovgaps,             {.i = -1 } },
+	{ MODKEY|Mod1Mask,              XK_0,		   togglegaps,             {0} },
+	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,		   defaultgaps,            {0} },
 	{ MODKEY,                       XK_Tab,        view,                   {0} },
 	{ MODKEY,						XK_q,		   killclient,			   {0} },
 
@@ -217,10 +229,11 @@ static Key keys[] = {
 	{ MODKEY,						XK_i,		   setlayout,	 		   {.v = &layouts[6]} }, /* centeredmaster */
 	{ MODKEY|ShiftMask,				XK_i,		   setlayout,	 		   {.v = &layouts[7]} }, /* centeredfloatingmaster */
 	{ MODKEY,						XK_g,		   setlayout,	 		   {.v = &layouts[8]} }, /* grid */
+	{ MODKEY|ShiftMask,				XK_g,		   setlayout,			   {.v = &layouts[9]} }, /* floating */
 
 	{ MODKEY|ShiftMask,             XK_space,      togglefloating,         {0} },
 	{ MODKEY,                       XK_f,          togglefullscreen,       {0} },
-	{ MODKEY|ShiftMask,				XK_f,		   setlayout,			   {.v = &layouts[9]} },
+	{ MODKEY|ShiftMask,				XK_f,		   fullscreen,			   {0} },
 	{ MODKEY,                       XK_0,		   view,                   {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,		   tag,                    {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,      focusmon,               {.i = -1 } },

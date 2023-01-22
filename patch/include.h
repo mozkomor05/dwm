@@ -17,6 +17,7 @@
 #include "decorationhints.h"
 #include "dragcfact.h"
 #include "dragmfact.h"
+#include "fullscreen.h"
 #include "movestack.h"
 #include "pertag.h"
 #include "placemouse.h"
@@ -25,6 +26,10 @@
 #include "togglefullscreen.h"
 #include "vanitygaps.h"
 /* Layouts */
+#include "layout_bstack.h"
+#include "layout_centeredmaster.h"
+#include "layout_fibonacci.h"
 #include "layout_grid.h"
 #include "layout_monocle.h"
-
+#include "layout_tile.h"
+#include "layout_deck.h"

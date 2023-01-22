@@ -5,7 +5,7 @@ struct Pertag {
 	float mfacts[NUMTAGS + 1]; /* mfacts per tag */
 	unsigned int sellts[NUMTAGS + 1]; /* selected layouts */
 	Client *prevclient[NUMTAGS + 1];
-	int showbars[NUMTAGS + 1];
+	int showbars[NUMTAGS + 1]; /* display bar for the current tag */
 };
 
 void
@@ -33,7 +33,6 @@ pertagview(const Arg *arg)
 	selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
 	selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
 
-	if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
-		togglebar(NULL);
+
 }
 
