@@ -110,7 +110,6 @@ static const Rule rules[] = {
 	RULE(.wintype  = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype  = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype  = WTYPE "SPLASH", .isfloating = 1)
-	RULE(.class    = "vlc", .title = "VLC media player", .isfloating = 0)
 };
 
 
