@@ -269,7 +269,7 @@ static Key keys[] = {
 	{ 0,							XF86XK_Sleep,			  spawn,		   SHCMD("systemctl suspend") },
 	{ 0, 							XF86XK_MonBrightnessUp,	  spawn,		   SHCMD("xbacklight -inc 15") },
 	{ 0, 							XF86XK_MonBrightnessDown, spawn,		   SHCMD("xbacklight -dec 15") },
-	{ Mod1Mask,						XK_Shift_L,				  spawn,		   SHCMD("kill -37 $(pidof dwmblocks)") },
+	{ Mod1Mask,						XK_Shift_L,				  spawn,		   SHCMD("xkb-switch -n; kill -37 $(pidof dwmblocks)") },
 };
 
 
@@ -310,6 +310,3 @@ static Button buttons[] = {
 	{ ClkTagBar,			0,					 Button5,		 shiftview,		 {.i = 1} },
 	{ ClkTagBar,            MODKEY,              Button3,        toggletag,      {0} },
 };
-
-
-
