@@ -106,11 +106,11 @@ static const Rule rules[] = {
 	 *	WM_WINDOW_ROLE(STRING) = role
 	 *	_NET_WM_WINDOW_TYPE(ATOM) = wintype
 	 */
-	RULE(.wintype  = WTYPE "DIALOG", .isfloating = 1)
-	RULE(.wintype  = WTYPE "UTILITY", .isfloating = 1)
-	RULE(.wintype  = WTYPE "TOOLBAR", .isfloating = 1)
-	RULE(.wintype  = WTYPE "SPLASH", .isfloating = 1)
-	RULE(.class    = "vlc", .title = "VLC media player", .isfloating = 0)
+	RULE(.wintype 	= WTYPE "DIALOG",	.isfloating = 1)
+	RULE(.wintype	= WTYPE "UTILITY",	.isfloating = 1)
+	RULE(.wintype	= WTYPE "TOOLBAR",	.isfloating = 1)
+	RULE(.wintype	= WTYPE "SPLASH",	.isfloating = 1)
+	RULE(.class		= "Alacritty",		.iscentered = 1)
 };
 
 
