@@ -1,5 +1,5 @@
 # dwm version
-VERSION = 6.2
+VERSION = 6.4
 
 # Customize below to fit your system
 
@@ -46,7 +46,7 @@ FREETYPEINC = /usr/include/freetype2
 #XEXTLIB = -lXext
 
 # Uncomment this for the swallow patch / SWALLOW_PATCH
-#XCBLIBS = -lX11-xcb -lxcb -lxcb-res
+XCBLIBS = -lX11-xcb -lxcb -lxcb-res
 
 # This is needed for the winicon patch / BAR_WINICON_PATCH
 #IMLIB2LIBS = -lImlib2
