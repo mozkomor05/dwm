@@ -36,6 +36,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <spawn.h>
 
 #ifdef XINERAMA
 
@@ -2281,18 +2282,10 @@ void showhide(Client *c) {
     }
 }
 
+extern char **environ;
+
 void spawn(const Arg *arg) {
-
-    if (fork() == 0) {
-        if (dpy)
-            close(ConnectionNumber(dpy));
-
-        setsid();
-        execvp(((char **) arg->v)[0], (char **) arg->v);
-        fprintf(stderr, "dwm: execvp %s", ((char **) arg->v)[0]);
-        perror(" failed");
-        exit(EXIT_SUCCESS);
-    }
+    posix_spawnp(NULL, ((char **)arg->v)[0], NULL, NULL, (char **)arg->v, environ);
 }
 
 void tag(const Arg *arg) {
@@ -2489,18 +2482,15 @@ void updatebars(void) {
     XClassHint ch = {"dwm", "dwm"};
     for (m = mons; m; m = m->next) {
         for (bar = m->bar; bar; bar = bar->next) {
-            if (bar->external)
+            if (bar->external || bar->win)
                 continue;
-            if (!bar->win) {
-                bar->win =
-                        XCreateWindow(dpy, root, bar->bx, bar->by, bar->bw, bar->bh, 0,
-                                      DefaultDepth(dpy, screen), CopyFromParent,
-                                      DefaultVisual(dpy, screen),
-                                      CWOverrideRedirect | CWBackPixmap | CWEventMask, &wa);
-                XDefineCursor(dpy, bar->win, cursor[CurNormal]->cursor);
-                XMapRaised(dpy, bar->win);
-                XSetClassHint(dpy, bar->win, &ch);
-            }
+            bar->win = XCreateWindow(dpy, root, bar->bx, bar->by, bar->bw, bar->bh, 0,
+                                     DefaultDepth(dpy, screen), CopyFromParent,
+                                     DefaultVisual(dpy, screen),
+                                     CWOverrideRedirect | CWBackPixmap | CWEventMask, &wa);
+            XDefineCursor(dpy, bar->win, cursor[CurNormal]->cursor);
+            XMapRaised(dpy, bar->win);
+            XSetClassHint(dpy, bar->win, &ch);
         }
     }
 }
@@ -2572,48 +2562,46 @@ int updategeom(void) {
                 memcpy(&unique[j++], &info[i], sizeof(XineramaScreenInfo));
         XFree(info);
         nn = j;
-        if (n <= nn) { /* new monitors available */
-            for (i = 0; i < (nn - n); i++) {
-                for (m = mons; m && m->next; m = m->next);
-                if (m)
-                    m->next = createmon();
-                else
-                    mons = createmon();
-            }
-            for (i = 0, m = mons; i < nn && m; m = m->next, i++) {
-                if (i >= n || unique[i].x_org != m->mx || unique[i].y_org != m->my ||
-                    unique[i].width != m->mw || unique[i].height != m->mh) {
-                    dirty = 1;
-                    m->num = i;
-                    m->mx = m->wx = unique[i].x_org;
-                    m->my = m->wy = unique[i].y_org;
-                    m->mw = m->ww = unique[i].width;
-                    m->mh = m->wh = unique[i].height;
-                    updatebarpos(m);
-                }
-            }
-        } else { /* less monitors available nn < n */
-            for (i = nn; i < n; i++) {
-                for (m = mons; m && m->next; m = m->next);
-                while ((c = m->clients)) {
-                    dirty = 1;
-                    m->clients = c->next;
-                    detachstack(c);
-                    c->mon = mons;
-                    attach(c);
-                    attachstack(c);
-                }
-                if (m == selmon)
-                    selmon = mons;
-                cleanupmon(m);
-            }
+
+        /* new monitors if nn > n */
+        for (i = n; i < nn; i++) {
+            for (m = mons; m && m->next; m = m->next);
+            if (m)
+                m->next = createmon();
+            else
+                mons = createmon();
         }
-        for (i = 0, m = mons; m; m = m->next, i++)
-            m->index = i;
+        for (i = 0, m = mons; i < nn && m; m = m->next, i++)
+            if (i >= n
+                || unique[i].x_org != m->mx || unique[i].y_org != m->my
+                || unique[i].width != m->mw || unique[i].height != m->mh) {
+                dirty = 1;
+                m->num = i;
+                m->mx = m->wx = unique[i].x_org;
+                m->my = m->wy = unique[i].y_org;
+                m->mw = m->ww = unique[i].width;
+                m->mh = m->wh = unique[i].height;
+                updatebarpos(m);
+            }
+        /* removed monitors if n > nn */
+        for (i = nn; i < n; i++) {
+            for (m = mons; m && m->next; m = m->next);
+            while ((c = m->clients)) {
+                dirty = 1;
+                m->clients = c->next;
+                detachstack(c);
+                c->mon = mons;
+                attach(c);
+                attachstack(c);
+            }
+            if (m == selmon)
+                selmon = mons;
+            cleanupmon(m);
+        }
         free(unique);
     } else
 #endif /* XINERAMA */
-    {    /* default monitor setup */
+    { /* default monitor setup */
         if (!mons)
             mons = createmon();
         if (mons->mw != sw || mons->mh != sh) {
@@ -2629,6 +2617,7 @@ int updategeom(void) {
     }
     return dirty;
 }
+
 
 void updatenumlockmask(void) {
     unsigned int i, j;
